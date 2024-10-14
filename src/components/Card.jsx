@@ -4,19 +4,21 @@ import { CharacterCard } from "./CharacterCard";
 
 function Card() {
   const [characters, setCharacters] = useState([]);
+  const [shuffledCharacters, setShuffledCharacters] = useState([]);
 
   useEffect(() => {
     fetchCharacter();
   }, []);
 
   const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
+    const shuffled = [...array]; // Create a copy to avoid mutating the original
+    for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    return array;
-  }
-  
+    return shuffled;
+  };
+
   async function fetchCharacter() {
     try {
       const response = await fetch(`https://futuramaapi.com/api/characters`, {
@@ -46,15 +48,26 @@ function Card() {
         ].includes(character.name)
       );
       setCharacters(specificCharacters);
+      setShuffledCharacters(specificCharacters); 
     } catch (error) {
       console.error("Error: ", error);
     }
   }
+
+  const handleCardClick = (name) => {
+    alert(`You clicked on: ${name}`); 
+    setShuffledCharacters((prevCharacters) => shuffleArray(prevCharacters)); 
+  };
+
   return (
     <div>
       <div className="main-container">
-        {characters.map((character, index) => (
-          <CharacterCard key={index} {...character} />
+        {shuffledCharacters.map((character, index) => (
+          <CharacterCard
+            key={index}
+            {...character}
+            onClick={() => handleCardClick(character.name)} 
+          />
         ))}
       </div>
     </div>
