@@ -13,7 +13,7 @@ function Card() {
       const simplifiedData = data.map((character) => ({
         name: character.name.first + " " + character.name.last,
         image: character.images.main,
-        sayings: character.sayings[0] || "No saying",
+        sayings: character.saying[0] || "No saying",
       }));
       console.log("First character:", data[0]);
       setCharacters(simplifiedData);
