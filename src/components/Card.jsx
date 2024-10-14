@@ -5,26 +5,23 @@ import { CharacterCard } from "./CharacterCard";
 function Card() {
   const [characters, setCharacters] = useState([]);
 
-  const fetchCharacters = async () => {
+  async function fetchCharacter() {
     try {
-      const response = await fetch(
-        "https://api.sampleapis.com/futurama/characters"
-      );
+      const response = await fetch(`https://futuramaapi.com/api/characters`, {
+        mode: "cors",
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid");
+      }
+
       const data = await response.json();
-      const simplifiedData = data.map((character) => ({
-        name: character.name.first + " " + character.name.last,
-        image: character.images.main,
-        saying: character.sayings[0] || "No saying",
-      }));
-      console.log("First character:", data[0]);
-      setCharacters(simplifiedData);
+      console.log(data);
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error: ", error);
     }
-  };
-  useEffect(() => {
-    fetchCharacters();
-  }, []);
+  }
+  fetchCharacter();
   return (
     <div>
       <div className="main-container">
