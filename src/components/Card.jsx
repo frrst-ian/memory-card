@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
+import { CharacterCard } from "./CharacterCard";
 
 function Card() {
   const [characters, setCharacters] = useState([]);
@@ -24,6 +25,15 @@ function Card() {
   useEffect(() => {
     fetchCharacters();
   }, []);
+  return (
+    <div>
+      <div className="main-container">
+        {characters.map((character, index) => (
+          <CharacterCard key={index} {...character} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export { Card };
