@@ -5,6 +5,10 @@ import { CharacterCard } from "./CharacterCard";
 function Card() {
   const [characters, setCharacters] = useState([]);
 
+  useEffect(() => {
+    fetchCharacter();
+  }, []);
+
   async function fetchCharacter() {
     try {
       const response = await fetch(`https://futuramaapi.com/api/characters`, {
@@ -17,11 +21,27 @@ function Card() {
 
       const data = await response.json();
       console.log(data);
+
+      const specificCharacters = data.items.filter((character) =>
+        [
+          "Philip J. Fry",
+          "Bender Bending Rodríguez",
+          "Snoop Dogg's head",
+          "Matt Groening's head",
+          "Mom",
+          "Njörd",
+          "Bigfoot",
+          "Ronald Reagan's head",
+          "Thomas Jefferson's head",
+          "Theodore Roosevelt's head",
+          "Loch Ness Monster",
+        ].includes(character.name)
+      );
+      setCharacters(specificCharacters);
     } catch (error) {
       console.error("Error: ", error);
     }
   }
-  fetchCharacter();
   return (
     <div>
       <div className="main-container">
